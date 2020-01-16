@@ -5,16 +5,20 @@
 </head>
 <body>
 <script>
-    // Try to set a cookie
-    var randVal = Math.random();
-    var randVal2 = 'test_' + Math.random();
-    document.cookie = randVal2+'='+randVal;
-
-    if (getCookie(randVal2) == randVal) {
-        window.parent.postMessage('cookies', "*");
-    } else {
-        window.parent.postMessage('no_cookies', "*");
-    }
+    // From: https://stackoverflow.com/a/3855394
+    var qs = (function(a) {
+        if (a == "") return {};
+        var b = {};
+        for (var i = 0; i < a.length; ++i)
+        {
+            var p=a[i].split('=', 2);
+            if (p.length == 1)
+                b[p[0]] = "";
+            else
+                b[p[0]] = decodeURIComponent(p[1].replace(/\+/g, " "));
+        }
+        return b;
+    })(window.location.search.substr(1).split('&'));
 
     function getCookie(cname) {
         var name = cname + "=";
@@ -32,6 +36,29 @@
         return "";
     }
 
+    // Allowed test origins
+    // * senglehardt.com is here temporarily until we move the
+    //   test suite on that domain to a Mozilla-owned domain
+    // * pocket.com and getpocket.com are here for the ETP user study
+    var testOrigins = [
+      'senglehardt.com',
+      'pocket.com',
+      'getpocket.com'
+    ];
+
+    // Try to set a cookie
+    var randVal = Math.random();
+    var randVal2 = 'test_' + Math.random();
+    document.cookie = randVal2+'='+randVal;
+
+    // Return result
+    if ('test_origin' in qs && testOrigins.includes(qs['test_origin'])) {
+      if (getCookie(randVal2) == randVal) {
+          window.parent.postMessage('cookies', qs['test_origin']);
+      } else {
+          window.parent.postMessage('no_cookies', qs['test_origin']);
+      }
+    }
 </script>
 </body>
 </html>
