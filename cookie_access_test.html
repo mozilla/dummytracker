@@ -58,6 +58,8 @@
       } else {
           window.parent.postMessage('no_cookies', qs['test_origin']);
       }
+    } else {
+      console.log("Test origin not in allow list, or no test origin given.");
     }
 </script>
 </body>
