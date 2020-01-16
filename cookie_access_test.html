@@ -53,10 +53,11 @@
 
     // Return result
     if ('test_origin' in qs && testOrigins.includes(qs['test_origin'])) {
+      var testOrigin = 'https://' + qs['test_origin'];
       if (getCookie(randVal2) == randVal) {
-          window.parent.postMessage('cookies', qs['test_origin']);
+          window.parent.postMessage('cookies', testOrigin);
       } else {
-          window.parent.postMessage('no_cookies', qs['test_origin']);
+          window.parent.postMessage('no_cookies', testOrigin);
       }
     } else {
       console.log("Test origin not in allow list, or no test origin given.");
