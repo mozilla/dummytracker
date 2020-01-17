@@ -5,21 +5,6 @@
 </head>
 <body>
 <script>
-    // From: https://stackoverflow.com/a/3855394
-    var qs = (function(a) {
-        if (a == "") return {};
-        var b = {};
-        for (var i = 0; i < a.length; ++i)
-        {
-            var p=a[i].split('=', 2);
-            if (p.length == 1)
-                b[p[0]] = "";
-            else
-                b[p[0]] = decodeURIComponent(p[1].replace(/\+/g, " "));
-        }
-        return b;
-    })(window.location.search.substr(1).split('&'));
-
     function getCookie(cname) {
         var name = cname + "=";
         var decodedCookie = decodeURIComponent(document.cookie);
@@ -54,8 +39,9 @@
     document.cookie = randVal2+'='+randVal;
 
     // Return result
-    if ('test_origin' in qs && testOrigins.includes(qs['test_origin'])) {
-      var testOrigin = 'https://' + qs['test_origin'];
+    const qs = new URLSearchParams(window.location.search);
+    if (qs.has('test_origin') && testOrigins.includes(qs.get('test_origin'))) {
+      var testOrigin = 'https://' + qs.get('test_origin');
       if (getCookie(randVal2) == randVal) {
           window.parent.postMessage('cookies', testOrigin);
       } else {
