@@ -37,7 +37,7 @@
     // Try to set a cookie
     var randVal = Math.random();
     var randVal2 = 'test_' + Math.random();
-    document.cookie = randVal2+'='+randVal;
+    document.cookie = randVal2+'='+randVal+'; SameSite=None; Secure';
 
     // Return result
     const qs = new URLSearchParams(window.location.search);
